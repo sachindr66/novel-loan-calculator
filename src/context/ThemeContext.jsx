@@ -18,7 +18,15 @@ export const ThemeProvider = ({ children }) => {
       palette: {
         mode: themeMode,
       },
-     
+      components: {
+        MuiTableCell: {
+          styleOverrides: {
+            root: {
+              color: isDark ? '#ffffff' : undefined,
+            },
+          },
+        },
+      },
     });
   }, [themeMode]);
 
