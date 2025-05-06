@@ -3,6 +3,8 @@ import { TextField, Button, Typography, Box, Grid, Container } from '@mui/materi
 import { CurrencyContext } from '../context/CurrencyContext';
 import useEMICalculation from '../hooks/useEMICalculation';
 import useExchangeRate from '../hooks/useExchangeRate';
+import AmortizationTable from './AmortizationTable';
+import CurrencyDropdown from './CurrencyDropdown';
 
 const LoanCalculator = () => {
     const [loanAmount, setLoanAmount] = useState(100000);
@@ -14,13 +16,19 @@ const LoanCalculator = () => {
 
     const exchangeRate = useExchangeRate(currency);
 
-    const { EMI,  calculateEMI } = useEMICalculation();
+    const { EMI, amortizationSchedule, calculateEMI } = useEMICalculation();
 
     const handleCalculate = () => {
         calculateEMI(Number(loanAmount), Number(interestRate), Number(loanTerm));
         setCalculate(true);
     };
 
+    const handleReset = () => {
+        setLoanAmount(100000);
+        setInterestRate(8.5);
+        setLoanTerm(5);
+        setCalculate(false);
+    };
 
     return (
         <Container>
@@ -28,7 +36,7 @@ const LoanCalculator = () => {
 
             <Box sx={{ marginBottom: 3 }}>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} md={4}>
+                    <Grid >
                         <TextField
                             label="Loan Amount"
                             variant="outlined"
@@ -38,7 +46,7 @@ const LoanCalculator = () => {
                             type="number"
                         />
                     </Grid>
-                    <Grid item xs={12} md={4}>
+                    <Grid>
                         <TextField
                             label="Interest Rate (%)"
                             variant="outlined"
@@ -48,7 +56,7 @@ const LoanCalculator = () => {
                             type="number"
                         />
                     </Grid>
-                    <Grid item xs={12} md={4}>
+                    <Grid>
                         <TextField
                             label="Term (Years)"
                             variant="outlined"
@@ -68,10 +76,37 @@ const LoanCalculator = () => {
                     <Typography variant="h6">
                         Monthly EMI: ${(EMI * exchangeRate).toFixed(2)}
                     </Typography>
+                    <Box  sx={{ display: 'flex', justifyContent: "space-between" , alignItems:"center", flexWrap:"wrap"}}>
+                        <Box sx={{display:"flex", alignItems:"center", gap:1}}>
+                        <CurrencyDropdown />
+                        <Typography>
+                        Converted  EMI: {(EMI * exchangeRate).toFixed(2)} {currency}
+                    </Typography>
+                        </Box>
+                        <Button
+                            variant="outlined"
+                            color="secondary"
+                            onClick={handleReset}
+                            sx={{ marginTop: 2 }}
+                        >
+                            Reset Table
+                        </Button>
+
                     </Box>
+                </Box>
             )}
 
-           
+            {calculate && amortizationSchedule.length > 0 && exchangeRate && (
+                <AmortizationTable
+                    schedule={amortizationSchedule.map((row) => ({
+                        ...row,
+                        principal: (row.principal * exchangeRate).toFixed(2),
+                        interest: (row.interest * exchangeRate).toFixed(2),
+                        remainingBalance: (row.remainingBalance * exchangeRate).toFixed(2),
+                    }))}
+                    currency={currency}
+                />
+            )}
 
 
         </Container>
