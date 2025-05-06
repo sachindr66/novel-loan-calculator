@@ -6,10 +6,12 @@ import About from './components/About';
 import { ThemeProvider } from './context/ThemeContext';
 import LoanCalculator from './components/LoanCalculator';
 import ExchangeRates from './components/ExchangeRates';
+import { CurrencyProvider } from './context/CurrencyContext';
 
 function App() {
   return (
     <ThemeProvider>
+      <CurrencyProvider>
         <Router>
           <Header />
           <Routes>
@@ -19,6 +21,7 @@ function App() {
             <Route path="error-page" element={<ErrorPage />} />
           </Routes>
         </Router>
+      </CurrencyProvider>
     </ThemeProvider>
   );
 }
