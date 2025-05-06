@@ -18,7 +18,7 @@ function App() {
             <Route path="/" element={<LoanCalculator />} />
             <Route path="/exchange-rates" element={<ExchangeRates />} />
             <Route path="/about" element={<About/>} />
-            <Route path="error-page" element={<ErrorPage />} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Router>
       </CurrencyProvider>

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { ThemeContext } from '../context/ThemeContext';
 import {
   AppBar,
@@ -14,6 +14,7 @@ import {
   Box,
   Switch,
   useMediaQuery,
+  ListItemButton,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 const Header = () => {
@@ -28,18 +29,18 @@ const Header = () => {
   const drawerContent = (
     <Box sx={{ width: 250 }} onClick={toggleDrawer}>
       <List>
-        <ListItem button component={Link} to="/">
+        <ListItemButton activeClassName="nav-link-active" component={NavLink} to="/">
           <ListItemText primary="Home" />
-        </ListItem>
-        <ListItem button component={Link} to="/exchange-rates">
+        </ListItemButton>
+        <ListItemButton  component={Link} to="/exchange-rates">
           <ListItemText primary="Exchange Rates (Live)" />
-        </ListItem>
-        <ListItem button component={Link} to="/about">
+        </ListItemButton>
+        <ListItemButton  component={Link} to="/about">
           <ListItemText primary="About" />
-        </ListItem>
-        <ListItem button component={Link} to="/error-page">
+        </ListItemButton>
+        <ListItemButton  component={Link} to="/error-page">
           <ListItemText primary="Error Page" />
-        </ListItem>
+        </ListItemButton>
       </List>
     </Box>
   );
@@ -58,7 +59,8 @@ const Header = () => {
           </Typography>
           {!isMobile && (
             <>
-              <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
+              <Link 
+              to="/" style={{ textDecoration: 'none', color: 'white' }}>
                 <Button color="inherit">Home</Button>
               </Link>
               <Link to="/exchange-rates" style={{ textDecoration: 'none', color: 'white' }}>
